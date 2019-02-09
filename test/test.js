@@ -16,10 +16,7 @@ describe('alignToOrigin', function() {
       container: 'body',
       additionalModules: [
         AlignToOrigin
-      ],
-      alignToOrigin: {
-        alignOnSave: true
-      }
+      ]
     });
 
     var elementRegistry = modeler.get('elementRegistry');
@@ -43,6 +40,42 @@ describe('alignToOrigin', function() {
   });
 
 
+  it('should disable alignOnSave', function(done) {
+
+    // given
+    var diagramXML = require('./process.bpmn');
+
+    var modeler = new BpmnModeler({
+      container: 'body',
+      additionalModules: [
+        AlignToOrigin
+      ],
+      alignToOrigin: {
+        alignOnSave: false
+      }
+    });
+
+    var elementRegistry = modeler.get('elementRegistry');
+
+    modeler.importXML(diagramXML, function() {
+
+      var element = elementRegistry.get('StartEvent');
+
+      // when
+      modeler.saveXML(function(err, xml) {
+
+        // then
+        // expect element got not aligned
+        expect(element.x).not.to.eql(106);
+        expect(element.y).not.to.eql(106);
+
+        done(err);
+      });
+    });
+
+  });
+
+
   it('should extend CmmnModeler instance', function(done) {
 
     // given
@@ -52,10 +85,7 @@ describe('alignToOrigin', function() {
       container: 'body',
       additionalModules: [
         AlignToOrigin
-      ],
-      alignToOrigin: {
-        alignOnSave: true
-      }
+      ]
     });
 
     var elementRegistry = modeler.get('elementRegistry');
@@ -89,10 +119,7 @@ describe('alignToOrigin', function() {
       drd: {
         additionalModules: [
           AlignToOrigin
-        ],
-        alignToOrigin: {
-          alignOnSave: true
-        }
+        ]
       }
     });
 

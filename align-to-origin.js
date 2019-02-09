@@ -5,7 +5,7 @@ import {
 var DEFAULT_OPTIONS = {
   padding: 100,
   threshold: 15,
-  alignOnSave: false,
+  alignOnSave: true,
   scrollCanvas: true
 };
 
