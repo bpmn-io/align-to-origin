@@ -2,14 +2,47 @@ import BpmnModeler from 'bpmn-js/lib/Modeler';
 import DmnModeler from 'dmn-js/lib/Modeler';
 import CmmnModeler from 'cmmn-js/lib/Modeler';
 
+import { insertCSS } from 'bpmn-js/test/helper';
+
+import TestVisualizationModule from './test-visualization';
+import DiagramOriginModule from 'diagram-js-origin';
+
 import AlignToOriginModule from '..';
 
+
+insertCSS(
+  'test.css',
+  'html, body { height: 100%; padding: 0; }' +
+  '.djs-hit { stroke: lightgreen !important; stroke-opacity: .3 !important; }'
+);
+
 var TEST_MODULES = [
+  TestVisualizationModule,
+  DiagramOriginModule,
   AlignToOriginModule
 ];
 
 
 describe('alignToOrigin', function() {
+
+  it.skip('should work (visual test)', function(done) {
+
+    // given
+    var diagramXML = require('./process.bpmn');
+
+    var modeler = new BpmnModeler({
+      container: 'body',
+      additionalModules: TEST_MODULES
+    });
+
+    setInterval(function() {
+      modeler.saveXML(function() {});
+    }, 3000);
+
+    modeler.importXML(diagramXML, done);
+
+  });
+
 
   it('should extend BpmnModeler instance', function(done) {
 
