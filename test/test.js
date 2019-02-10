@@ -2,7 +2,11 @@ import BpmnModeler from 'bpmn-js/lib/Modeler';
 import DmnModeler from 'dmn-js/lib/Modeler';
 import CmmnModeler from 'cmmn-js/lib/Modeler';
 
-import AlignToOrigin from '..';
+import AlignToOriginModule from '..';
+
+var TEST_MODULES = [
+  AlignToOriginModule
+];
 
 
 describe('alignToOrigin', function() {
@@ -14,9 +18,7 @@ describe('alignToOrigin', function() {
 
     var modeler = new BpmnModeler({
       container: 'body',
-      additionalModules: [
-        AlignToOrigin
-      ]
+      additionalModules: TEST_MODULES
     });
 
     var elementRegistry = modeler.get('elementRegistry');
@@ -30,12 +32,18 @@ describe('alignToOrigin', function() {
 
         // then
         // expect element got aligned
-        expect(element.x).to.eql(106);
-        expect(element.y).to.eql(106);
+        expect(element.x).to.eql(156);
+        expect(element.y).to.eql(156);
 
         done(err);
       });
+
     });
+
+
+    setInterval(function() {
+      modeler.saveXML(function() {});
+    }, 3000);
 
   });
 
@@ -47,9 +55,7 @@ describe('alignToOrigin', function() {
 
     var modeler = new BpmnModeler({
       container: 'body',
-      additionalModules: [
-        AlignToOrigin
-      ],
+      additionalModules: TEST_MODULES,
       alignToOrigin: {
         alignOnSave: false
       }
@@ -66,8 +72,8 @@ describe('alignToOrigin', function() {
 
         // then
         // expect element got not aligned
-        expect(element.x).not.to.eql(106);
-        expect(element.y).not.to.eql(106);
+        expect(element.x).not.to.eql(156);
+        expect(element.y).not.to.eql(156);
 
         done(err);
       });
@@ -83,9 +89,7 @@ describe('alignToOrigin', function() {
 
     var modeler = new CmmnModeler({
       container: 'body',
-      additionalModules: [
-        AlignToOrigin
-      ]
+      additionalModules: TEST_MODULES
     });
 
     var elementRegistry = modeler.get('elementRegistry');
@@ -99,8 +103,8 @@ describe('alignToOrigin', function() {
 
         // then
         // expect element got aligned
-        expect(element.x).to.eql(106);
-        expect(element.y).to.eql(124);
+        expect(element.x).to.eql(156);
+        expect(element.y).to.eql(174);
 
         done(err);
       });
@@ -117,9 +121,7 @@ describe('alignToOrigin', function() {
     var modeler = new DmnModeler({
       container: 'body',
       drd: {
-        additionalModules: [
-          AlignToOrigin
-        ]
+        additionalModules: TEST_MODULES
       }
     });
 
@@ -134,13 +136,38 @@ describe('alignToOrigin', function() {
 
         // then
         // expect element got aligned
-        expect(element.x).to.eql(106);
-        expect(element.y).to.eql(106);
+        expect(element.x).to.eql(200);
+        expect(element.y).to.eql(156);
 
         done(err);
       });
     });
 
+  });
+
+
+  it('should compute correct adjustment', function() {
+
+    // given
+    var modeler = new BpmnModeler({
+      container: 'body',
+      additionalModules: TEST_MODULES
+    });
+
+    var alignToOrigin = modeler.get('alignToOrigin');
+
+    var config = {
+      offset: { x: 100, y: 100 },
+      tolerance: 50
+    };
+
+    // then
+    expect(alignToOrigin.computeAdjustment({ x: 40, y: 60 }, config)).to.eql({ x: 60, y: 0 });
+    expect(alignToOrigin.computeAdjustment({ x: 60, y: 40 }, config)).to.eql({ x: 0, y: 60 });
+    expect(alignToOrigin.computeAdjustment({ x: 140, y: 160 }, config)).to.eql({ x: 0, y: -60 });
+    expect(alignToOrigin.computeAdjustment({ x: 160, y: 140 }, config)).to.eql({ x: -60, y: 0 });
+    expect(alignToOrigin.computeAdjustment({ x: 90, y: 90 }, config)).to.eql({ x: 0, y: 0 });
+    expect(alignToOrigin.computeAdjustment({ x: -30, y: 200 }, config)).to.eql({ x: 130, y: -100 });
   });
 
 });

@@ -1,10 +1,14 @@
 import {
-  assign
+  assign,
+  isNumber
 } from 'min-dash';
 
 var DEFAULT_OPTIONS = {
-  padding: 100,
-  threshold: 15,
+  offset: {
+    x: 150,
+    y: 150
+  },
+  tolerance: 50,
   alignOnSave: true,
   scrollCanvas: true
 };
@@ -13,8 +17,8 @@ var HIGHER_PRIORITY = 1250;
 
 
 /**
- * Moves diagram contents to the origin (padding,padding), optionally upon
- * diagram save.
+ * Moves diagram contents to the origin + offset,
+ * optionally upon diagram save.
  *
  * @param {Object} config
  * @param {didi.Injector} injector
@@ -24,6 +28,13 @@ var HIGHER_PRIORITY = 1250;
 export default function AlignToOrigin(config, injector, canvas, modeling) {
 
   this._config = config = assign({}, DEFAULT_OPTIONS, config || {});
+
+  if (isNumber(config.offset)) {
+    config.offset = {
+      x: config.offset,
+      y: config.offset
+    };
+  }
 
   this._canvas = canvas;
   this._modeling = modeling;
@@ -110,9 +121,7 @@ AlignToOrigin.prototype.align = function(options) {
   var canvas = this._canvas,
       modeling = this._modeling;
 
-  var scrollCanvas = 'scrollCanvas' in options ? options.scrollCanvas : config.scrollCanvas,
-      padding = config.padding,
-      threshold = config.threshold;
+  var scrollCanvas = 'scrollCanvas' in options ? options.scrollCanvas : config.scrollCanvas;
 
   var viewbox = this.getViewbox();
 
@@ -121,27 +130,47 @@ AlignToOrigin.prototype.align = function(options) {
 
   var elementClosure = this.getElementClosure();
 
-  var dx = -bounds.x + padding,
-      dy = -bounds.y + padding;
+  var delta = this.computeAdjustment(bounds, config);
 
-  if (Math.abs(dx) < threshold && Math.abs(dy) < threshold) {
-    // no adjustment needed, skipping
+  if (delta.x === 0 && delta.y === 0) {
     return;
   }
 
   modeling.moveElements(
     elementClosure,
-    {
-      x: dx,
-      y: dy
-    }
+    delta
   );
 
   if (scrollCanvas) {
     canvas.scroll({
-      dx: -dx * scale,
-      dy: -dy * scale
+      dx: -delta.x * scale,
+      dy: -delta.y * scale
     });
   }
 
+};
+
+
+/**
+ * Compute adjustment given the specified diagram origin.
+ *
+ * @param {Point} origin
+ *
+ * @return {Point} adjustment
+ */
+AlignToOrigin.prototype.computeAdjustment = function(origin, config) {
+
+  var offset = config.offset,
+      tolerance = config.tolerance;
+
+  var adjustment = {};
+
+  [ 'x', 'y' ].forEach(function(axis) {
+
+    var delta = -origin[axis] + offset[axis];
+
+    adjustment[axis] = Math.abs(delta) < tolerance ? 0 : delta;
+  });
+
+  return adjustment;
 };
