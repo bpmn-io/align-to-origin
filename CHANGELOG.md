@@ -6,6 +6,14 @@ All notable changes to [@bpmn-io/align-to-origin](https://github.com/bpmn-io/ali
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.3.0
+
+* `FEAT`: add ability to specify `{ x, y }` offset
+* `FEAT`: adjust `x` and `y` independent from each other
+* `FEAT`: apply sane default for `offset` and `tolerance`
+* `CHORE`: rename `padding` to `offset`
+* `CHORE`: rename `thresold` to `tolerance`
+
 ## 0.2.0
 
 * `FEAT`: make `alignOnSave=true` the default behavior
