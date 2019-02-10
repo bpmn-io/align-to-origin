@@ -4,6 +4,8 @@
 
 Plugs into your favorite [BPMN](https://github.com/bpmn-io/bpmn-js), [DMN](https://github.com/bpmn-io/dmn-js) and [CMMN](https://github.com/bpmn-io/cmmn-js) editor. Adds the ability to align diagrams to the coordinate origin `(0,0)`, optionally on save.
 
+![Automatic Origin Adjustment](./resources/screencapture.gif)
+
 
 ## Usage
 
