@@ -16,12 +16,6 @@ insertCSS(
   '.djs-hit { stroke: lightgreen !important; stroke-opacity: .3 !important; }'
 );
 
-var TEST_MODULES = [
-  TestVisualizationModule,
-  DiagramOriginModule,
-  AlignToOriginModule
-];
-
 
 describe('alignToOrigin', function() {
 
@@ -32,7 +26,11 @@ describe('alignToOrigin', function() {
 
     var modeler = new BpmnModeler({
       container: 'body',
-      additionalModules: TEST_MODULES
+      additionalModules: [
+        TestVisualizationModule,
+        DiagramOriginModule,
+        AlignToOriginModule
+      ]
     });
 
     setInterval(function() {
@@ -51,7 +49,7 @@ describe('alignToOrigin', function() {
 
     var modeler = new BpmnModeler({
       container: 'body',
-      additionalModules: TEST_MODULES
+      additionalModules: [ AlignToOriginModule ]
     });
 
     var elementRegistry = modeler.get('elementRegistry');
@@ -88,7 +86,7 @@ describe('alignToOrigin', function() {
 
     var modeler = new BpmnModeler({
       container: 'body',
-      additionalModules: TEST_MODULES,
+      additionalModules: [ AlignToOriginModule ],
       alignToOrigin: {
         alignOnSave: false
       }
@@ -122,7 +120,7 @@ describe('alignToOrigin', function() {
 
     var modeler = new CmmnModeler({
       container: 'body',
-      additionalModules: TEST_MODULES
+      additionalModules: [ AlignToOriginModule ]
     });
 
     var elementRegistry = modeler.get('elementRegistry');
@@ -154,7 +152,7 @@ describe('alignToOrigin', function() {
     var modeler = new DmnModeler({
       container: 'body',
       drd: {
-        additionalModules: TEST_MODULES
+        additionalModules: [ AlignToOriginModule ]
       }
     });
 
@@ -184,7 +182,7 @@ describe('alignToOrigin', function() {
     // given
     var modeler = new BpmnModeler({
       container: 'body',
-      additionalModules: TEST_MODULES
+      additionalModules: [ AlignToOriginModule ]
     });
 
     var alignToOrigin = modeler.get('alignToOrigin');
