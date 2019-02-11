@@ -30,11 +30,14 @@ describe('alignToOrigin', function() {
         TestVisualizationModule,
         DiagramOriginModule,
         AlignToOriginModule
-      ]
+      ],
+      keyboard: {
+        bindTo: document.body
+      }
     });
 
     setInterval(function() {
-      modeler.saveXML(function() {});
+      modeler.get('alignToOrigin').align();
     }, 3000);
 
     modeler.importXML(diagramXML, done);
@@ -240,7 +243,10 @@ describe('alignToOrigin', function() {
       // then
       expectAligned();
 
-      // and when undoing...
+      // when zooming in...
+      canvas.zoom(1.3);
+
+      // and undoing...
       commandStack.undo();
       commandStack.undo();
 
