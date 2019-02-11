@@ -18,8 +18,7 @@ import AlignToOrigin from '@bpmn-io/align-to-origin';
 // extend the BPMN editor with the exporter module
 var modeler = new BpmnModeler({
   alignToOrigin: {
-    alignOnSave: true,
-    scrollCanvas: true
+    alignOnSave: true
   },
   additionalModules: [
     AlignToOrigin
@@ -35,7 +34,7 @@ modeler.saveXML(function(err, xml) {
 // may be used standalone, too
 var alignToOrigin = modeler.get('alignToOrigin');
 
-alignToOrigin.align({ scrollCanvas: false });
+alignToOrigin.align();
 ```
 
 
