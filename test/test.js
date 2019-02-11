@@ -71,11 +71,6 @@ describe('alignToOrigin', function() {
 
     });
 
-
-    setInterval(function() {
-      modeler.saveXML(function() {});
-    }, 3000);
-
   });
 
 
@@ -199,6 +194,62 @@ describe('alignToOrigin', function() {
     expect(alignToOrigin.computeAdjustment({ x: 160, y: 140 }, config)).to.eql({ x: -60, y: 0 });
     expect(alignToOrigin.computeAdjustment({ x: 90, y: 90 }, config)).to.eql({ x: 0, y: 0 });
     expect(alignToOrigin.computeAdjustment({ x: -30, y: 200 }, config)).to.eql({ x: 130, y: -100 });
+  });
+
+
+  it('should scroll canvas', function(done) {
+
+    // given
+    var diagramXML = require('./process.bpmn');
+
+    var modeler = new BpmnModeler({
+      container: 'body',
+      additionalModules: [ AlignToOriginModule ],
+      canvas: {
+        deferUpdate: false
+      }
+    });
+
+
+    var alignToOrigin = modeler.get('alignToOrigin');
+    var elementRegistry = modeler.get('elementRegistry');
+    var modeling = modeler.get('modeling');
+    var commandStack = modeler.get('commandStack');
+    var canvas = modeler.get('canvas');
+
+    function expectAligned() {
+      var inner = canvas.viewbox().inner;
+
+      expect({ x: inner.x, y: inner.y }).to.eql({ x: 150, y: 150 });
+    }
+
+    modeler.importXML(diagramXML, function() {
+
+      // given
+      var element = elementRegistry.get('StartEvent');
+
+      alignToOrigin.align();
+
+      // assume
+      expectAligned();
+
+      // when
+      modeling.moveElements([ element ], { x: -200, y: -200 });
+      alignToOrigin.align();
+
+      // then
+      expectAligned();
+
+      // and when undoing...
+      commandStack.undo();
+      commandStack.undo();
+
+      // then
+      expectAligned();
+
+      done();
+    });
+
   });
 
 });
