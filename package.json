@@ -2,7 +2,7 @@
   "name": "@bpmn-io/align-to-origin",
   "version": "0.3.0",
   "description": "Align diagrams to the diagram origin",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "all": "run-s lint test",
     "lint": "eslint .",
