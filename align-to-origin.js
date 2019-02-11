@@ -9,8 +9,7 @@ var DEFAULT_OPTIONS = {
     y: 150
   },
   tolerance: 50,
-  alignOnSave: true,
-  scrollCanvas: true
+  alignOnSave: true
 };
 
 var HIGHER_PRIORITY = 1250;
@@ -22,155 +21,163 @@ var HIGHER_PRIORITY = 1250;
  *
  * @param {Object} config
  * @param {didi.Injector} injector
+ * @param {CommandStack} commandStack
  * @param {Canvas} canvas
  * @param {Modeling} modeling
  */
-export default function AlignToOrigin(config, injector, canvas, modeling) {
+export default function AlignToOrigin(config, injector, commandStack, canvas, modeling) {
 
-  this._config = config = assign({}, DEFAULT_OPTIONS, config || {});
+  /**
+   * Return actual config with defaults applied.
+   */
+  function applyDefaults(config) {
 
-  if (isNumber(config.offset)) {
-    config.offset = {
-      x: config.offset,
-      y: config.offset
+    var c = assign({}, DEFAULT_OPTIONS, config || {});
+
+    if (isNumber(c.offset)) {
+      c.offset = {
+        x: c.offset,
+        y: c.offset
+      };
+    }
+
+    return c;
+  }
+
+  config = applyDefaults(config);
+
+  /**
+   * Compute adjustment given the specified diagram origin.
+   *
+   * @param {Point} origin
+   *
+   * @return {Point} adjustment
+   */
+  function computeAdjustment(origin, config) {
+
+    var offset = config.offset,
+        tolerance = config.tolerance;
+
+    var adjustment = {};
+
+    [ 'x', 'y' ].forEach(function(axis) {
+
+      var delta = -origin[axis] + offset[axis];
+
+      adjustment[axis] = Math.abs(delta) < tolerance ? 0 : delta;
+    });
+
+    return adjustment;
+  }
+
+
+  /**
+   * Align the diagram content to the origin.
+   *
+   * @param {Object} options
+   */
+  function align() {
+
+    var bounds = canvas.viewbox().inner;
+
+    var elements = canvas.getRootElement().children;
+
+    var delta = computeAdjustment(bounds, config);
+
+    if (delta.x === 0 && delta.y === 0) {
+      return;
+    }
+
+    commandStack.execute('elements.alignToOrigin', {
+      elements: elements,
+      delta: delta
+    });
+  }
+
+
+  /**
+   * Setup align on save functionality
+   */
+  function bindOnSave() {
+    // nested editors expose _parent to access the
+    // save responsible entity
+    var parent = injector.get('_parent', false);
+
+    var localEvents = injector.get('eventBus');
+
+    var parentEvents = parent && parent._eventBus;
+
+    (parentEvents || localEvents).on('saveXML.start', HIGHER_PRIORITY, align);
+
+    if (parentEvents) {
+
+      // unregister for saveXML.start
+      localEvents.on('diagram.destroy', function() {
+        parentEvents.off('saveXML.start', align);
+      });
+    }
+  }
+
+
+  /**
+   * Create a function that compensates the element movement
+   * by moving applying the delta in the given direction.
+   */
+  function movementCompensator(direction) {
+
+    /**
+     * Handler to executed
+     */
+    return function(context) {
+
+      var delta = context.delta;
+      var scale = canvas.viewbox().inner.scale;
+
+      canvas.scroll({
+        dx: direction * delta.x * scale,
+        dy: direction * delta.y * scale
+      });
     };
   }
 
-  this._canvas = canvas;
-  this._modeling = modeling;
+  // command registration
+
+  /**
+   * A command handler that compensates the element movement
+   * by applying the inverse move operation on the canvas.
+   */
+  commandStack.register('elements.alignToOrigin', {
+
+    preExecute: function(context) {
+      var delta = context.delta,
+          elements = context.elements;
+
+      modeling.moveElements(elements, delta);
+    },
+
+    executed: movementCompensator(-1),
+    reverted: movementCompensator(1)
+  });
+
+  // setup
 
   if (config.alignOnSave) {
-    this._setupOnSave(injector);
+    bindOnSave();
   }
+
+  // API
+
+  this.align = align;
+  this.computeAdjustment = computeAdjustment;
+
+  // internal debugging purposes
+  this._config = config;
 }
 
 AlignToOrigin.$inject = [
   'config.alignToOrigin',
   'injector',
+  'commandStack',
   'canvas',
   'modeling'
 ];
-
-
-/**
- * Setup align on save functionality.
- *
- * @param {didi.Injector} injector
- */
-AlignToOrigin.prototype._setupOnSave = function(injector) {
-
-  // nested editors expose _parent to access the
-  // save responsible entity
-  var parent = injector.get('_parent', false);
-
-  var localEvents = injector.get('eventBus');
-
-  var parentEvents = parent && parent._eventBus;
-
-  var self = this;
-
-  function triggerAlignment() {
-    self.align();
-  }
-
-  (parentEvents || localEvents).on('saveXML.start', HIGHER_PRIORITY, triggerAlignment);
-
-  if (parentEvents) {
-
-    // unregister for saveXML.start
-    localEvents.on('diagram.destroy', function() {
-      parentEvents.off('saveXML.start', triggerAlignment);
-    });
-  }
-
-};
-
-
-/**
- * Return elements to move in order to adjust the viewbox.
- *
- * @return {Array<djs.BaseElement>}
- */
-AlignToOrigin.prototype.getElementClosure = function() {
-  return this._canvas.getRootElement().children;
-};
-
-
-/**
- * Return the diagram viewbox to consider.
- *
- * @return {Object} viewbox
- */
-AlignToOrigin.prototype.getViewbox = function() {
-  return this._canvas.viewbox();
-};
-
-
-/**
- * Align the diagram content to the origin.
- *
- * @param {Object} options
- * @param {Boolean} [options.scrollCanvas]
- */
-AlignToOrigin.prototype.align = function(options) {
-
-  options = options || {};
-
-  var config = this._config;
-
-  var canvas = this._canvas,
-      modeling = this._modeling;
-
-  var scrollCanvas = 'scrollCanvas' in options ? options.scrollCanvas : config.scrollCanvas;
-
-  var viewbox = this.getViewbox();
-
-  var bounds = viewbox.inner,
-      scale = viewbox.scale;
-
-  var elementClosure = this.getElementClosure();
-
-  var delta = this.computeAdjustment(bounds, config);
-
-  if (delta.x === 0 && delta.y === 0) {
-    return;
-  }
-
-  modeling.moveElements(
-    elementClosure,
-    delta
-  );
-
-  if (scrollCanvas) {
-    canvas.scroll({
-      dx: -delta.x * scale,
-      dy: -delta.y * scale
-    });
-  }
-
-};
-
-
-/**
- * Compute adjustment given the specified diagram origin.
- *
- * @param {Point} origin
- *
- * @return {Point} adjustment
- */
-AlignToOrigin.prototype.computeAdjustment = function(origin, config) {
-
-  var offset = config.offset,
-      tolerance = config.tolerance;
-
-  var adjustment = {};
-
-  [ 'x', 'y' ].forEach(function(axis) {
-
-    var delta = -origin[axis] + offset[axis];
-
-    adjustment[axis] = Math.abs(delta) < tolerance ? 0 : delta;
-  });
-
-  return adjustment;
-};
