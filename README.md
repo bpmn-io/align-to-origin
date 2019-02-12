@@ -20,7 +20,9 @@ import AlignToOrigin from '@bpmn-io/align-to-origin';
 // extend the BPMN editor with the exporter module
 var modeler = new BpmnModeler({
   alignToOrigin: {
-    alignOnSave: true
+    alignOnSave: true,
+    offset: 150,
+    tolerance: 50
   },
   additionalModules: [
     AlignToOrigin
