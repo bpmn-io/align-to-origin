@@ -12,8 +12,17 @@ import AlignToOriginModule from '..';
 
 insertCSS(
   'test.css',
-  'html, body { height: 100%; padding: 0; }' +
-  '.djs-hit { stroke: lightgreen !important; stroke-opacity: .3 !important; }'
+  require('./test.css')
+);
+
+insertCSS(
+  'diagram.css',
+  require('bpmn-js/dist/assets/diagram-js.css')
+);
+
+insertCSS(
+  'bpmn-font.css',
+  require('bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css')
 );
 
 

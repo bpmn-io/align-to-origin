@@ -1,0 +1,10 @@
+html, body {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.djs-hit {
+  stroke: lightgreen !important;
+  stroke-opacity: .3 !important;
+}
