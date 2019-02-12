@@ -6,6 +6,10 @@ All notable changes to [@bpmn-io/align-to-origin](https://github.com/bpmn-io/ali
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.4.2
+
+* `FIX`: move canvas after `commandStack.changed` ([`95834a8439fc3f053995740d8dc8ce7302b3be39`](https://github.com/bpmn-io/align-to-origin/commit/95834a8439fc3f053995740d8dc8ce7302b3be39))
+
 ## 0.4.1
 
 * `FIX`: correct documentation
