@@ -2,9 +2,11 @@
 
 [![Build Status](https://travis-ci.com/bpmn-io/align-to-origin.svg?branch=master)](https://travis-ci.com/bpmn-io/align-to-origin)
 
-Plugs into your favorite [BPMN](https://github.com/bpmn-io/bpmn-js), [DMN](https://github.com/bpmn-io/dmn-js) and [CMMN](https://github.com/bpmn-io/cmmn-js) editor. Adds the ability to align diagrams to the coordinate origin `(0,0)`, optionally on save.
+Aligns your diagrams to the coordinate origin `(0,0)`,  per default on diagram save. Plugs into your favorite [BPMN](https://github.com/bpmn-io/bpmn-js), [DMN](https://github.com/bpmn-io/dmn-js) and [CMMN](https://github.com/bpmn-io/cmmn-js) editor. 
 
 ![Automatic Origin Adjustment](./resources/screencapture.gif)
+
+_Alignment in action. [Diagram origin marker](https://github.com/bpmn-io/diagram-js-origin), alignment corridor, and element boxes shown for demonstration purposes only._
 
 
 ## Usage
