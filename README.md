@@ -6,7 +6,7 @@ Aligns your diagrams to the coordinate origin `(0,0)`, manually triggered or on 
 
 Plugs into your favorite [BPMN](https://github.com/bpmn-io/bpmn-js), [DMN](https://github.com/bpmn-io/dmn-js) and [CMMN](https://github.com/bpmn-io/cmmn-js) editor. 
 
-![Automatic Origin Adjustment](./resources/screencapture.gif)
+<img src="https://raw.githubusercontent.com/bpmn-io/align-to-origin/master/resources/screencapture.gif" width="600" alt="Automatic Origin Adjustment" />
 
 _Alignment in action. [Diagram origin marker](https://github.com/bpmn-io/diagram-js-origin), alignment corridor, and element boxes shown for demonstration purposes only._
 
