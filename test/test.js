@@ -76,7 +76,7 @@ describe('alignToOrigin', function() {
         // then
         // expect element got aligned
         expect(element.x).to.eql(156);
-        expect(element.y).to.eql(156);
+        expect(element.y).to.eql(81);
 
         done(err);
       });
@@ -142,7 +142,7 @@ describe('alignToOrigin', function() {
         // then
         // expect element got aligned
         expect(element.x).to.eql(156);
-        expect(element.y).to.eql(174);
+        expect(element.y).to.eql(99);
 
         done(err);
       });
@@ -175,7 +175,7 @@ describe('alignToOrigin', function() {
         // then
         // expect element got aligned
         expect(element.x).to.eql(200);
-        expect(element.y).to.eql(156);
+        expect(element.y).to.eql(81);
 
         done(err);
       });
@@ -232,7 +232,7 @@ describe('alignToOrigin', function() {
     function expectAligned() {
       var inner = canvas.viewbox().inner;
 
-      expect({ x: inner.x, y: inner.y }).to.eql({ x: 150, y: 150 });
+      expect({ x: inner.x, y: inner.y }).to.eql({ x: 150, y: 75 });
     }
 
     modeler.importXML(diagramXML, function() {
