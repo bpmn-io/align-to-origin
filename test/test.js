@@ -10,6 +10,10 @@ import DiagramOriginModule from 'diagram-js-origin';
 import AlignToOriginModule from '..';
 
 
+var NoGridSnapping = {
+  'gridSnapping': [ 'value', null ]
+};
+
 insertCSS(
   'test.css',
   require('./test.css')
@@ -54,14 +58,17 @@ describe('alignToOrigin', function() {
   });
 
 
-  it('should extend BpmnModeler instance', function(done) {
+  it('should extend BpmnModeler instance without grid snapping', function(done) {
 
     // given
     var diagramXML = require('./process.bpmn');
 
     var modeler = new BpmnModeler({
       container: 'body',
-      additionalModules: [ AlignToOriginModule ]
+      additionalModules: [
+        AlignToOriginModule,
+        NoGridSnapping
+      ]
     });
 
     var elementRegistry = modeler.get('elementRegistry');
@@ -77,6 +84,40 @@ describe('alignToOrigin', function() {
         // expect element got aligned
         expect(element.x).to.eql(156);
         expect(element.y).to.eql(81);
+
+        done(err);
+      });
+
+    });
+
+  });
+
+
+  it('should extend BpmnModeler instance with grid snapping', function(done) {
+
+    // given
+    var diagramXML = require('./process.bpmn');
+
+    var modeler = new BpmnModeler({
+      container: 'body',
+      additionalModules: [
+        AlignToOriginModule
+      ]
+    });
+
+    var elementRegistry = modeler.get('elementRegistry');
+
+    modeler.importXML(diagramXML, function() {
+
+      var element = elementRegistry.get('StartEvent');
+
+      // when
+      modeler.saveXML(function(err, xml) {
+
+        // then
+        // expect element got aligned
+        expect(element.x).to.eql(156);
+        expect(element.y).to.eql(84);
 
         done(err);
       });
@@ -232,7 +273,7 @@ describe('alignToOrigin', function() {
     function expectAligned() {
       var inner = canvas.viewbox().inner;
 
-      expect({ x: inner.x, y: inner.y }).to.eql({ x: 150, y: 75 });
+      expect({ x: inner.x, y: inner.y }).to.eql({ x: 150, y: 78 });
     }
 
     modeler.importXML(diagramXML, function() {
