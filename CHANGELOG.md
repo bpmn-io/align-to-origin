@@ -6,6 +6,10 @@ All notable changes to [@bpmn-io/align-to-origin](https://github.com/bpmn-io/ali
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.6.0
+
+* `FEAT`: make grid aware
+
 ## 0.5.0
 
 * `CHORE`: update `y` offset to more sane default
