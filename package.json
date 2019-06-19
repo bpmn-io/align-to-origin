@@ -1,6 +1,6 @@
 {
   "name": "@bpmn-io/align-to-origin",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Align diagrams to the diagram origin",
   "main": "lib/index.js",
   "scripts": {
