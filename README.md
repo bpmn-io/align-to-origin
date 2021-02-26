@@ -21,7 +21,7 @@ import AlignToOrigin from '@bpmn-io/align-to-origin';
 
 
 // extend the BPMN editor with the exporter module
-var modeler = new BpmnModeler({
+const modeler = new BpmnModeler({
   alignToOrigin: {
     alignOnSave: true,
     offset: 150,
@@ -39,7 +39,7 @@ modeler.saveXML(function(err, xml) {
 });
 
 // may be used standalone, too
-var alignToOrigin = modeler.get('alignToOrigin');
+const alignToOrigin = modeler.get('alignToOrigin');
 
 alignToOrigin.align();
 ```
