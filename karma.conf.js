@@ -19,16 +19,16 @@ module.exports = function(karma) {
     ],
 
     files: [
-      'test/test.js'
+      'test/testBundle.js'
     ],
 
     preprocessors: {
-      'test/test.js': [ 'webpack' ]
+      'test/testBundle.js': [ 'webpack' ]
     },
 
     reporters: 'dots',
 
-    browsers: browsers,
+    browsers,
 
     browserNoActivityTimeout: 30000,
 
