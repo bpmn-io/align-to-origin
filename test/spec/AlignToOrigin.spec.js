@@ -160,4 +160,34 @@ describe('alignToOrigin', function() {
 
   });
 
+
+  it('should handle last element removal', async function() {
+
+    // given
+    var diagramXML = require('./AlignToOrigin.event.bpmn');
+
+    var modeler = new BpmnModeler({
+      container: 'body',
+      additionalModules: [
+        AlignToOriginModule
+      ]
+    });
+
+    await modeler.importXML(diagramXML);
+
+    var elementRegistry = modeler.get('elementRegistry');
+    var modeling = modeler.get('modeling');
+    var commandStack = modeler.get('commandStack');
+
+    // when
+    modeling.removeElements([
+      elementRegistry.get('Event')
+    ]);
+
+    commandStack.undo();
+
+    // then
+    expect(elementRegistry.get('Event')).to.exist;
+  });
+
 });
