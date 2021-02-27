@@ -6,6 +6,7 @@ import TestVisualizationModule from './test-visualization';
 import DiagramOriginModule from 'diagram-js-origin';
 
 import AlignToOriginModule from '../..';
+import AutoSaveModule from './auto-save';
 
 insertCSS(
   'test.css',
@@ -188,6 +189,39 @@ describe('alignToOrigin', function() {
 
     // then
     expect(elementRegistry.get('Event')).to.exist;
+  });
+
+
+  it('should allow alignment with auto-save', async function() {
+
+    // given
+    var diagramXML = require('./AlignToOrigin.event.bpmn');
+
+    var modeler = new BpmnModeler({
+      container: 'body',
+      additionalModules: [
+        AlignToOriginModule,
+        AutoSaveModule
+      ]
+    });
+
+    await modeler.importXML(diagramXML);
+
+    var elementRegistry = modeler.get('elementRegistry');
+    var modeling = modeler.get('modeling');
+
+    modeler.on('saveXML.done', function(event) {
+      console.debug('[saveXML.done]', event);
+    });
+
+    modeling.moveElements([
+      elementRegistry.get('Event')
+    ], { x: 400, y: 0 });
+
+    modeling.moveElements([
+      elementRegistry.get('Event')
+    ], { x: -230, y: -500 });
+
   });
 
 });
