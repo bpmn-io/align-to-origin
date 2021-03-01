@@ -210,10 +210,7 @@ describe('alignToOrigin', function() {
     var elementRegistry = modeler.get('elementRegistry');
     var modeling = modeler.get('modeling');
 
-    modeler.on('saveXML.done', function(event) {
-      console.debug('[saveXML.done]', event);
-    });
-
+    // when
     modeling.moveElements([
       elementRegistry.get('Event')
     ], { x: 400, y: 0 });
@@ -222,6 +219,26 @@ describe('alignToOrigin', function() {
       elementRegistry.get('Event')
     ], { x: -230, y: -500 });
 
+    // then
+    // we expect auto safe to trigger once,
+    // without endless looping
+    await eventEmitted(modeler, 'saveXML.done');
   });
 
 });
+
+
+// helpers /////////////
+
+function eventEmitted(emitter, event) {
+
+  return new Promise(function(resolve, reject) {
+    function listenerFn(event) {
+      emitter.off(event, listenerFn);
+
+      return resolve(event);
+    }
+
+    emitter.on(event, listenerFn);
+  });
+}
