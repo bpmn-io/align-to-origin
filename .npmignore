@@ -1,5 +1,4 @@
 test
-.travis.yml
 .eslintrc
 .github
 karma.conf.js
