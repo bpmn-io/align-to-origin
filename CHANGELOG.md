@@ -6,6 +6,12 @@ All notable changes to [@bpmn-io/align-to-origin](https://github.com/bpmn-io/ali
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.7.0
+
+* `CHORE`: migrate CI to GitHub Actions ([`a3c349de`](https://github.com/bpmn-io/align-to-origin/commit/a3c349de675fa514043fef7f1cb46e230cac589b))
+* `CHORE`: add autosaving integration test ([#5](https://github.com/bpmn-io/align-to-origin/pull/5))
+* `CHORE`: early abort alignment if no elements ([`d6c5580d`](https://github.com/bpmn-io/align-to-origin/commit/d6c5580da8cbf3db4b455ec9ceab41221534b845))
+
 ## 0.6.0
 
 * `FEAT`: make grid aware
