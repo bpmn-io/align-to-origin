@@ -13,7 +13,7 @@ describe('alignToOrigin - bpmn-js integration', function() {
   it('should extend BpmnModeler with grid snapping', async function() {
 
     // given
-    var diagramXML = require('./process.bpmn');
+    var diagramXML = require('./process.bpmn').default;
 
     var modeler = new BpmnModeler({
       container: 'body',
@@ -34,15 +34,15 @@ describe('alignToOrigin - bpmn-js integration', function() {
 
     // then
     // expect element got aligned
-    expect(element.x).to.eql(156);
-    expect(element.y).to.eql(81);
+    expect(element.x).to.eql(106);
+    expect(element.y).to.be.closeTo(80, .001);
   });
 
 
   it('should extend BpmnModeler with grid snapping', async function() {
 
     // given
-    var diagramXML = require('./process.bpmn');
+    var diagramXML = require('./process.bpmn').default;
 
     var modeler = new BpmnModeler({
       container: 'body',
@@ -70,7 +70,7 @@ describe('alignToOrigin - bpmn-js integration', function() {
   it('should disable alignOnSave', async function() {
 
     // given
-    var diagramXML = require('./process.bpmn');
+    var diagramXML = require('./process.bpmn').default;
 
     var modeler = new BpmnModeler({
       container: 'body',

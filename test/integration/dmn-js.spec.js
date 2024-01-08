@@ -8,7 +8,7 @@ describe('alignToOrigin - DRD integration', function() {
   it('should extend Drd instance', function(done) {
 
     // given
-    var diagramXML = require('./decision.dmn');
+    var diagramXML = require('./decision.dmn').default;
 
     var modeler = new DmnModeler({
       container: 'body',
