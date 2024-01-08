@@ -10,17 +10,17 @@ import AutoSaveModule from './auto-save';
 
 insertCSS(
   'test.css',
-  require('./test.css')
+  require('./test.css').default
 );
 
 insertCSS(
   'diagram.css',
-  require('bpmn-js/dist/assets/diagram-js.css')
+  require('bpmn-js/dist/assets/diagram-js.css').default
 );
 
 insertCSS(
   'bpmn-font.css',
-  require('bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css')
+  require('bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css').default
 );
 
 
@@ -29,7 +29,7 @@ describe('alignToOrigin', function() {
   it.skip('should work (visual test)', async function() {
 
     // given
-    var diagramXML = require('./AlignToOrigin.default.bpmn');
+    var diagramXML = require('./AlignToOrigin.default.bpmn').default;
 
     var modeler = new BpmnModeler({
       container: 'body',
@@ -54,7 +54,7 @@ describe('alignToOrigin', function() {
   it('should disable alignOnSave', async function() {
 
     // given
-    var diagramXML = require('./AlignToOrigin.default.bpmn');
+    var diagramXML = require('./AlignToOrigin.default.bpmn').default;
 
     var modeler = new BpmnModeler({
       container: 'body',
@@ -109,7 +109,7 @@ describe('alignToOrigin', function() {
   it('should scroll canvas', async function() {
 
     // given
-    var diagramXML = require('./AlignToOrigin.default.bpmn');
+    var diagramXML = require('./AlignToOrigin.default.bpmn').default;
 
     var modeler = new BpmnModeler({
       container: 'body',
@@ -129,7 +129,7 @@ describe('alignToOrigin', function() {
     function expectAligned() {
       var inner = canvas.viewbox().inner;
 
-      expect({ x: inner.x, y: inner.y }).to.eql({ x: 150, y: 78 });
+      expect({ x: inner.x, y: inner.y }).to.eql({ x: 151, y: 79 });
     }
 
     await modeler.importXML(diagramXML);
@@ -165,7 +165,7 @@ describe('alignToOrigin', function() {
   it('should handle last element removal', async function() {
 
     // given
-    var diagramXML = require('./AlignToOrigin.event.bpmn');
+    var diagramXML = require('./AlignToOrigin.event.bpmn').default;
 
     var modeler = new BpmnModeler({
       container: 'body',
@@ -195,7 +195,7 @@ describe('alignToOrigin', function() {
   it('should allow alignment with auto-save', async function() {
 
     // given
-    var diagramXML = require('./AlignToOrigin.event.bpmn');
+    var diagramXML = require('./AlignToOrigin.event.bpmn').default;
 
     var modeler = new BpmnModeler({
       container: 'body',
