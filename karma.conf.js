@@ -1,3 +1,5 @@
+/* eslint-env node */
+
 'use strict';
 
 // use puppeteer provided Chrome for testing
