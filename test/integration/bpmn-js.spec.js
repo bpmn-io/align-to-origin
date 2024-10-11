@@ -10,7 +10,7 @@ var NoGridSnapping = {
 
 describe('alignToOrigin - bpmn-js integration', function() {
 
-  it('should extend BpmnModeler with grid snapping', async function() {
+  it('should extend BpmnModeler without grid snapping', async function() {
 
     // given
     var diagramXML = require('./process.bpmn').default;
