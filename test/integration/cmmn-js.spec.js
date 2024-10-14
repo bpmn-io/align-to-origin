@@ -2,14 +2,14 @@ import CmmnModeler from 'cmmn-js/lib/Modeler';
 
 import AlignToOriginModule from '../..';
 
+import diagramXML from './case.cmmn';
+
 
 describe('alignToOrigin - cmmn-js integration', function() {
 
   it('should extend CmmnModeler instance', function(done) {
 
     // given
-    var diagramXML = require('./case.cmmn').default;
-
     var modeler = new CmmnModeler({
       container: 'body',
       additionalModules: [ AlignToOriginModule ]

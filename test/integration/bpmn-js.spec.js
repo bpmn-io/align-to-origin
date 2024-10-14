@@ -2,6 +2,8 @@ import BpmnModeler from 'bpmn-js/lib/Modeler';
 
 import AlignToOriginModule from '../..';
 
+import diagramXML from './process.bpmn';
+
 
 var NoGridSnapping = {
   'gridSnapping': [ 'value', null ]
@@ -13,8 +15,6 @@ describe('alignToOrigin - bpmn-js integration', function() {
   it('should extend BpmnModeler without grid snapping', async function() {
 
     // given
-    var diagramXML = require('./process.bpmn').default;
-
     var modeler = new BpmnModeler({
       container: 'body',
       additionalModules: [
@@ -42,8 +42,6 @@ describe('alignToOrigin - bpmn-js integration', function() {
   it('should extend BpmnModeler with grid snapping', async function() {
 
     // given
-    var diagramXML = require('./process.bpmn').default;
-
     var modeler = new BpmnModeler({
       container: 'body',
       additionalModules: [
@@ -70,8 +68,6 @@ describe('alignToOrigin - bpmn-js integration', function() {
   it('should disable alignOnSave', async function() {
 
     // given
-    var diagramXML = require('./process.bpmn').default;
-
     var modeler = new BpmnModeler({
       container: 'body',
       additionalModules: [ AlignToOriginModule ],
