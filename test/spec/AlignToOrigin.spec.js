@@ -1,3 +1,5 @@
+/* global require */
+
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 
 import { insertCSS } from 'bpmn-js/test/helper';
