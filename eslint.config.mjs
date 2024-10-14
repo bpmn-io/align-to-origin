@@ -1,22 +1,32 @@
 import bpmnIoPlugin from 'eslint-plugin-bpmn-io';
 
+const files = {
+  build: [
+    '*.js',
+    '*.mjs'
+  ],
+  test: [
+    'test/**/*.js'
+  ]
+};
+
 export default [
   ...bpmnIoPlugin.configs.browser.map((config) => {
     return {
       ...config,
-      files: [ 'lib/**/*.js' ]
+      ignores: files.build
     };
   }),
   ...bpmnIoPlugin.configs.node.map((config) => {
     return {
       ...config,
-      files: [ '*.js', '*.mjs', 'test/testBundle.js' ]
+      files: files.build
     };
   }),
   ...bpmnIoPlugin.configs.mocha.map((config) => {
     return {
       ...config,
-      files: [ 'test/**/*.js' ]
+      files: files.test
     };
   })
 ];
