@@ -39,10 +39,7 @@ describe('alignToOrigin', function() {
         TestVisualizationModule,
         DiagramOriginModule,
         AlignToOriginModule
-      ],
-      keyboard: {
-        bindTo: document.body
-      }
+      ]
     });
 
     setInterval(function() {

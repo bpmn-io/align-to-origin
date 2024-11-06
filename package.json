@@ -32,7 +32,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "bpmn-js": "^17.0.0",
+    "bpmn-js": "^18.0.0",
     "chai": "^4.4.0",
     "cmmn-js": "^0.20.0",
     "diagram-js-origin": "^1.4.0",
