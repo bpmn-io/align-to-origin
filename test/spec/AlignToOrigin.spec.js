@@ -1,5 +1,7 @@
 /* global require */
 
+import { expect } from 'chai';
+
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 
 import { insertCSS } from 'bpmn-js/test/helper';

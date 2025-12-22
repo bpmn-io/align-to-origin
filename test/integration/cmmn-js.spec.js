@@ -1,3 +1,5 @@
+import { expect } from 'chai';
+
 import CmmnModeler from 'cmmn-js/lib/Modeler';
 
 import AlignToOriginModule from '../..';
