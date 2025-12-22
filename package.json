@@ -33,7 +33,7 @@
   "license": "MIT",
   "devDependencies": {
     "bpmn-js": "^18.0.0",
-    "chai": "^6.0.0",
+    "chai": "^6.2.2",
     "cmmn-js": "^0.20.0",
     "diagram-js-origin": "^1.4.0",
     "dmn-js": "^17.0.0",
@@ -47,9 +47,9 @@
     "mocha": "^11.0.0",
     "mocha-test-container-support": "^0.2.0",
     "npm-run-all2": "^8.0.0",
-    "puppeteer": "^24.0.0",
+    "puppeteer": "^24.34.0",
     "raw-loader": "^4.0.2",
-    "webpack": "^5.96.1"
+    "webpack": "^5.104.1"
   },
   "files": [
     "lib"
