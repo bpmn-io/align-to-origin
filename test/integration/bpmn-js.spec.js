@@ -1,3 +1,5 @@
+import { expect } from 'chai';
+
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 
 import AlignToOriginModule from '../..';

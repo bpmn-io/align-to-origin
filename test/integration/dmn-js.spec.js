@@ -1,3 +1,5 @@
+import { expect } from 'chai';
+
 import DmnModeler from 'dmn-js/lib/Modeler';
 
 import AlignToOriginModule from '../..';
