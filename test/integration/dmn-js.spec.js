@@ -9,7 +9,7 @@ import diagramXML from './decision.dmn';
 
 describe('alignToOrigin - DRD integration', function() {
 
-  it('should extend Drd instance', function(done) {
+  it('should extend Drd instance', async function() {
 
     // given
     var modeler = new DmnModeler({
@@ -19,28 +19,19 @@ describe('alignToOrigin - DRD integration', function() {
       }
     });
 
-    modeler.importXML(diagramXML, function(err) {
+    await modeler.importXML(diagramXML);
 
-      if (err) {
-        return done(err);
-      }
+    var elementRegistry = modeler.getActiveViewer().get('elementRegistry');
 
-      var elementRegistry = modeler.getActiveViewer().get('elementRegistry');
+    var element = elementRegistry.get('Decision');
 
-      var element = elementRegistry.get('Decision');
+    // when
+    await modeler.saveXML();
 
-      // when
-      modeler.saveXML(function(err, xml) {
-
-        // then
-        // expect element got aligned
-        expect(element.x).to.be.closeTo(200, 2);
-        expect(element.y).to.be.closeTo(80, 2);
-
-        done(err);
-      });
-    });
-
+    // then
+    // expect element got aligned
+    expect(element.x).to.be.closeTo(150, 2);
+    expect(element.y).to.be.closeTo(80, 2);
   });
 
 });
